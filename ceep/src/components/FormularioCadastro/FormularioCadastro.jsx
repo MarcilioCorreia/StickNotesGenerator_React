@@ -1,15 +1,19 @@
 import React, { Component } from "react";
 import "./estilo.css";
-
 class FormularioCadastro extends Component {
-  
   constructor(props) {
     super(props);
-    this.titulo ="";
-    this.texto ="";
+    this.titulo = "";
+    this.texto = "";
+    this.categoria = "Sem Categoria";
   }
 
-  _handleMudancaTitulo(evento){
+  _handleMudancaCategoria(evento){
+    evento.stopPropagation();
+    this.categoria = evento.target.value;
+  }
+  // parei no vídeo 03 do bloco 03
+  _handleMudancaTitulo(evento) {
     evento.stopPropagation();
     this.titulo = evento.target.value;
   }
@@ -19,17 +23,25 @@ class FormularioCadastro extends Component {
     this.texto = evento.target.value;
   }
 
-  _criarNota(evento){
+  _criarNota(evento) {
     evento.preventDefault();
     evento.stopPropagation();
-    this.props.criarNota(this.titulo, this.texto);
+    this.props.criarNota(this.titulo, this.texto, this.categoria);
   }
 
   render() {
     return (
-      <form className="form-cadastro"
-      onSubmit={this._criarNota.bind(this)}
-      >
+      <form className="form-cadastro" onSubmit={this._criarNota.bind(this)}>
+        <select
+          onChange={this._handleMudancaCategoria.bind(this)}
+          className="form-cadastro_input"
+        >
+          <option>Sem Categoria</option>
+
+          {this.props.categorias.map((categoria) => {
+            return <option>{categoria}</option>;
+          })}
+        </select>
         <input
           type="text"
           placeholder="Título"
